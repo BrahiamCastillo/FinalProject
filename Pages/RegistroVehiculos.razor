@@ -1,0 +1,125 @@
+@page "/registroV"
+@using System;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using FinalProject.Models;
+@inject DbContextOptions<rentcarContext> rentar  
+    
+<h3>Registrar Vehiculos</h3>
+<hr />
+<div class="container">
+    <form class="form">
+        <div class="form-group">
+            <label>Marca</label>
+            <input class="form-control" placeholder="Marca"  @bind="marca" />
+
+        </div>
+
+        <div class="form-group">
+            <label>Modelo</label>
+            <input class="form-control" placeholder="Modelo" @bind="modelo" />
+        </div>
+
+        <div class="form-group">
+            <label>Año</label>
+            <input class="form-control" placeholder="Año" @bind="year" />
+        </div>
+
+        <div class="form-group">
+            <label>Color</label>
+            <input class="form-control" placeholder="Color" @bind="color" />
+        </div>
+
+        <div class="form-group">
+            <label>Precio por dia</label>
+            <input class="form-control" placeholder="Precio por dia " @bind="Pdia" />
+        </div>
+
+        <div class="form-group">
+            <label>Tipo de vehiculo</label>
+            <select class="form-control" @bind="tipo">
+                <option id="1">carro</option>
+                <option id="2">camioneta</option>
+                <option id="3">motocicleta</option>
+                <option id="4">barco</option>
+            </select>
+        </div>
+
+         <div class="form-group">
+            <label>Capacidad de carga</label>
+            <input class="form-control" placeholder="Capacidad de carga en kg" @bind="carga" />
+        </div>
+
+        <div class="form-group">
+            <label>Pasajeros</label>
+            <input class="form-control" placeholder="pasajeros" @bind="pasajeros" />
+        </div>
+
+
+        <div class="form-group">
+            <label>Numero de seguro</label>
+            <input class="form-control" placeholder="Numero de seguro" @bind="seguro" />
+        </div>
+
+        <hr>
+        <div class="form-group">
+            <label>Latitud</label>
+            <input class="form-control" placeholder="Latitud" @bind="latitud" />
+        </div>
+
+        <div class="form-group">
+            <label>Longitud</label>
+            <input class="form-control" placeholder="Longitud" @bind="longitud" />
+        </div>
+
+        <button @onclick="agregar" class="btn btn-outline-success">Guardar</button>
+    </form>
+</div>
+
+@code
+{
+    string marca;
+    string modelo;
+
+    string year;
+    string color;
+    int seguro;
+    float Pdia;
+    int tipo;
+    float carga;
+    int pasajeros;
+    double latitud;
+    double longitud;
+    string Tvehiculo;
+
+    void agregar()
+    {
+        rentcarContext db = new rentcarContext(rentar);
+        TipoVehiculos tipoV = new TipoVehiculos();
+        Vehiculos carro = new Vehiculos();
+        
+        if(tipo == 1){
+            Tvehiculo = "carro";
+        }if(tipo == 2){
+            Tvehiculo = "camioneta";
+        }if(tipo == 3){
+            Tvehiculo = "motocicleta";
+        }if(tipo == 4){
+            Tvehiculo = "barco";
+        }
+        carro.Marca = marca;
+        carro.Modelo = modelo;
+        carro.Año = year;
+        carro.Nroseguro = seguro;
+        carro.Precio = Pdia;
+        carro.Capacidadcarga = carga;
+        carro.Pasajeros = pasajeros;
+        tipoV.Tipo = Tvehiculo;
+        carro.Latitude = latitud;
+        carro.Longitude = longitud;
+        db.Add(carro);
+        db.SaveChanges();
+    }
+
+}
+
