@@ -1,0 +1,97 @@
+@page "/reserva"
+@inject DbContextOptions<rentcarContext> options
+
+<h1>Reservación.</h1>
+<hr>
+
+@if (Vehicles().Count < 1 || Customers().Count < 1)
+{
+
+    <h1>No hay vehículos o clientes registrados.</h1>
+
+}
+else
+{
+    <div class="form-group">
+    <label for="vehiculo">Selecciones un vehículo.</label>
+    <select @bind="@vehiculo" name="vehiculo">
+        @foreach (var veh in Vehicles())
+        {
+            <option value="@veh.IdVehiculos">@veh.Modelo</option>
+        }
+    </select>
+</div>
+<hr>
+<div class="form-group">
+    <label for="customers">Selecciones un cliente.</label>
+    <select @bind="@cliente" name="vehiculo">
+        @foreach (var cust in Customers())
+        {
+            <option value="@cust.IdClientes">@cust.Nombre - @cust.Apellido</option>
+        }
+    </select>
+</div>
+<hr>
+<div class="form-group">
+    <label for="fecha-inicio">Selecciona la fecha de inicio.</label>
+    <input @bind-value="@fecha_inicio" type="date" name="fecha-inicio" id="fecha-inicio">
+</div>
+<hr>
+<div class="form-group">
+    <label for="fecha-fin">Selecciona la fecha del fin de alquiler.</label>
+    <input @bind-value="@fecha_fin" type="date" name="fecha-fin" id="fecha-fin">
+</div>
+
+<div class="form-group">
+    <label for="fecha-fin">Ingrese el monto.</label>
+    <input @bind-value="@monto" type="text" name="monto" id="monto">
+</div>
+
+<div class="form-group">
+    <button @onclick="@Process" class="btn btn-dark">Alquilar</button>
+</div>
+<hr>
+<h3>@message</h3>
+}
+
+
+@code {
+
+    int vehiculo;
+    int cliente;
+    DateTime fecha_inicio = DateTime.Now;
+    DateTime fecha_fin = DateTime.Now.AddDays(10);
+    double monto;
+
+    string message = "";
+
+    List<Vehiculos> Vehicles() => new rentcarContext(options).Vehiculos.ToList();
+
+    List<Clientes> Customers() => new rentcarContext(options).Clientes.ToList();
+
+    void Process() {
+
+        rentcarContext ctx = new rentcarContext(options);
+
+        Alquileres newAlquiler = new Alquileres {
+
+            VehiculosIdVehiculos = vehiculo,
+            ClientesIdClientes = cliente,
+            FechaInicio = fecha_inicio,
+            FechaFin = fecha_fin,
+            Monto = monto
+        };
+
+        try
+        {
+            ctx.Alquileres.Add(newAlquiler);
+        }
+        catch (System.Exception ex)
+        {
+             Console.WriteLine(ex.Message);
+             message = "No se pudo realizar el registro del alquiler";
+        }
+
+    }
+
+}

@@ -12,12 +12,11 @@ namespace FinalProject.Models
         public int IdAlquileres { get; set; }
         public int ClientesIdClientes { get; set; }
         public int VehiculosIdVehiculos { get; set; }
-        public int VehiculosTipoVehiculosIdTipoVehiculos { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public double Monto { get; set; }
 
         public virtual Clientes ClientesIdClientesNavigation { get; set; }
-        public virtual Vehiculos Vehiculos { get; set; }
+        public virtual Vehiculos VehiculosIdVehiculosNavigation { get; set; }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FinalProject.Migrations
 {
-    public partial class database_builder : Migration
+    public partial class database_builded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -89,14 +89,14 @@ namespace FinalProject.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
                     latitude = table.Column<double>(nullable: false),
-                    longitude = table.Column<double>(nullable: false)
+                    longitude = table.Column<double>(nullable: false),
+                    disponible = table.Column<sbyte>(nullable: false, defaultValueSql: "'1'")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.idVehiculos, x.TipoVehiculos_idTipoVehiculos })
-                        .Annotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                    table.PrimaryKey("PRIMARY", x => x.idVehiculos);
                     table.ForeignKey(
-                        name: "fk_Vehiculos_TipoVehiculos",
+                        name: "fk_Vehiculos_TipoVehiculos1",
                         column: x => x.TipoVehiculos_idTipoVehiculos,
                         principalTable: "TipoVehiculos",
                         principalColumn: "idTipoVehiculos",
@@ -111,15 +111,14 @@ namespace FinalProject.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Clientes_idClientes = table.Column<int>(nullable: false),
                     Vehiculos_idVehiculos = table.Column<int>(nullable: false),
-                    Vehiculos_TipoVehiculos_idTipoVehiculos = table.Column<int>(nullable: false),
                     fecha_inicio = table.Column<DateTime>(type: "date", nullable: false),
                     fecha_fin = table.Column<DateTime>(type: "date", nullable: false),
                     monto = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => new { x.idAlquileres, x.Clientes_idClientes, x.Vehiculos_idVehiculos, x.Vehiculos_TipoVehiculos_idTipoVehiculos })
-                        .Annotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0 });
+                    table.PrimaryKey("PRIMARY", x => new { x.idAlquileres, x.Clientes_idClientes })
+                        .Annotation("MySql:IndexPrefixLength", new[] { 0, 0 });
                     table.ForeignKey(
                         name: "fk_Alquileres_Clientes1",
                         column: x => x.Clientes_idClientes,
@@ -128,9 +127,9 @@ namespace FinalProject.Migrations
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "fk_Alquileres_Vehiculos1",
-                        columns: x => new { x.Vehiculos_idVehiculos, x.Vehiculos_TipoVehiculos_idTipoVehiculos },
+                        column: x => x.Vehiculos_idVehiculos,
                         principalTable: "Vehiculos",
-                        principalColumns: new[] { "idVehiculos", "TipoVehiculos_idTipoVehiculos" },
+                        principalColumn: "idVehiculos",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -142,10 +141,10 @@ namespace FinalProject.Migrations
             migrationBuilder.CreateIndex(
                 name: "fk_Alquileres_Vehiculos1_idx",
                 table: "Alquileres",
-                columns: new[] { "Vehiculos_idVehiculos", "Vehiculos_TipoVehiculos_idTipoVehiculos" });
+                column: "Vehiculos_idVehiculos");
 
             migrationBuilder.CreateIndex(
-                name: "fk_Vehiculos_TipoVehiculos_idx",
+                name: "fk_Vehiculos_TipoVehiculos1_idx",
                 table: "Vehiculos",
                 column: "TipoVehiculos_idTipoVehiculos");
         }

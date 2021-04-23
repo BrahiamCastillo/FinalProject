@@ -28,14 +28,6 @@ namespace FinalProject.Migrations
                         .HasColumnName("Clientes_idClientes")
                         .HasColumnType("int");
 
-                    b.Property<int>("VehiculosIdVehiculos")
-                        .HasColumnName("Vehiculos_idVehiculos")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VehiculosTipoVehiculosIdTipoVehiculos")
-                        .HasColumnName("Vehiculos_TipoVehiculos_idTipoVehiculos")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("FechaFin")
                         .HasColumnName("fecha_fin")
                         .HasColumnType("date");
@@ -48,14 +40,18 @@ namespace FinalProject.Migrations
                         .HasColumnName("monto")
                         .HasColumnType("double");
 
-                    b.HasKey("IdAlquileres", "ClientesIdClientes", "VehiculosIdVehiculos", "VehiculosTipoVehiculosIdTipoVehiculos")
+                    b.Property<int>("VehiculosIdVehiculos")
+                        .HasColumnName("Vehiculos_idVehiculos")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdAlquileres", "ClientesIdClientes")
                         .HasName("PRIMARY")
-                        .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0 });
+                        .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
                     b.HasIndex("ClientesIdClientes")
                         .HasName("fk_Alquileres_Clientes1_idx");
 
-                    b.HasIndex("VehiculosIdVehiculos", "VehiculosTipoVehiculosIdTipoVehiculos")
+                    b.HasIndex("VehiculosIdVehiculos")
                         .HasName("fk_Alquileres_Vehiculos1_idx");
 
                     b.ToTable("Alquileres");
@@ -164,10 +160,6 @@ namespace FinalProject.Migrations
                         .HasColumnName("idVehiculos")
                         .HasColumnType("int");
 
-                    b.Property<int>("TipoVehiculosIdTipoVehiculos")
-                        .HasColumnName("TipoVehiculos_idTipoVehiculos")
-                        .HasColumnType("int");
-
                     b.Property<string>("Año")
                         .IsRequired()
                         .HasColumnName("año")
@@ -185,6 +177,12 @@ namespace FinalProject.Migrations
                         .HasColumnType("varchar(45)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
+
+                    b.Property<sbyte>("Disponible")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("disponible")
+                        .HasColumnType("tinyint")
+                        .HasDefaultValueSql("'1'");
 
                     b.Property<string>("Foto")
                         .IsRequired()
@@ -227,12 +225,15 @@ namespace FinalProject.Migrations
                         .HasColumnName("precio")
                         .HasColumnType("float");
 
-                    b.HasKey("IdVehiculos", "TipoVehiculosIdTipoVehiculos")
-                        .HasName("PRIMARY")
-                        .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                    b.Property<int>("TipoVehiculosIdTipoVehiculos")
+                        .HasColumnName("TipoVehiculos_idTipoVehiculos")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdVehiculos")
+                        .HasName("PRIMARY");
 
                     b.HasIndex("TipoVehiculosIdTipoVehiculos")
-                        .HasName("fk_Vehiculos_TipoVehiculos_idx");
+                        .HasName("fk_Vehiculos_TipoVehiculos1_idx");
 
                     b.ToTable("Vehiculos");
                 });
@@ -245,9 +246,9 @@ namespace FinalProject.Migrations
                         .HasConstraintName("fk_Alquileres_Clientes1")
                         .IsRequired();
 
-                    b.HasOne("FinalProject.Models.Vehiculos", "Vehiculos")
+                    b.HasOne("FinalProject.Models.Vehiculos", "VehiculosIdVehiculosNavigation")
                         .WithMany("Alquileres")
-                        .HasForeignKey("VehiculosIdVehiculos", "VehiculosTipoVehiculosIdTipoVehiculos")
+                        .HasForeignKey("VehiculosIdVehiculos")
                         .HasConstraintName("fk_Alquileres_Vehiculos1")
                         .IsRequired();
                 });
@@ -257,7 +258,7 @@ namespace FinalProject.Migrations
                     b.HasOne("FinalProject.Models.TipoVehiculos", "TipoVehiculosIdTipoVehiculosNavigation")
                         .WithMany("Vehiculos")
                         .HasForeignKey("TipoVehiculosIdTipoVehiculos")
-                        .HasConstraintName("fk_Vehiculos_TipoVehiculos")
+                        .HasConstraintName("fk_Vehiculos_TipoVehiculos1")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
