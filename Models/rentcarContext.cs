@@ -25,14 +25,14 @@ namespace FinalProject.Models
         {
             modelBuilder.Entity<Alquileres>(entity =>
             {
-                entity.HasKey(e => new { e.IdAlquileres, e.ClientesIdClientes, e.VehiculosIdVehiculos, e.VehiculosTipoVehiculosIdTipoVehiculos })
+                entity.HasKey(e => new { e.IdAlquileres, e.ClientesIdClientes })
                     .HasName("PRIMARY")
-                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0, 0 });
+                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
 
                 entity.HasIndex(e => e.ClientesIdClientes)
                     .HasName("fk_Alquileres_Clientes1_idx");
 
-                entity.HasIndex(e => new { e.VehiculosIdVehiculos, e.VehiculosTipoVehiculosIdTipoVehiculos })
+                entity.HasIndex(e => e.VehiculosIdVehiculos)
                     .HasName("fk_Alquileres_Vehiculos1_idx");
 
                 entity.Property(e => e.IdAlquileres)
@@ -40,10 +40,6 @@ namespace FinalProject.Models
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.ClientesIdClientes).HasColumnName("Clientes_idClientes");
-
-                entity.Property(e => e.VehiculosIdVehiculos).HasColumnName("Vehiculos_idVehiculos");
-
-                entity.Property(e => e.VehiculosTipoVehiculosIdTipoVehiculos).HasColumnName("Vehiculos_TipoVehiculos_idTipoVehiculos");
 
                 entity.Property(e => e.FechaFin)
                     .HasColumnName("fecha_fin")
@@ -55,15 +51,17 @@ namespace FinalProject.Models
 
                 entity.Property(e => e.Monto).HasColumnName("monto");
 
+                entity.Property(e => e.VehiculosIdVehiculos).HasColumnName("Vehiculos_idVehiculos");
+
                 entity.HasOne(d => d.ClientesIdClientesNavigation)
                     .WithMany(p => p.Alquileres)
                     .HasForeignKey(d => d.ClientesIdClientes)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Alquileres_Clientes1");
 
-                entity.HasOne(d => d.Vehiculos)
+                entity.HasOne(d => d.VehiculosIdVehiculosNavigation)
                     .WithMany(p => p.Alquileres)
-                    .HasForeignKey(d => new { d.VehiculosIdVehiculos, d.VehiculosTipoVehiculosIdTipoVehiculos })
+                    .HasForeignKey(d => d.VehiculosIdVehiculos)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Alquileres_Vehiculos1");
             });
@@ -156,18 +154,13 @@ namespace FinalProject.Models
 
             modelBuilder.Entity<Vehiculos>(entity =>
             {
-                entity.HasKey(e => new { e.IdVehiculos, e.TipoVehiculosIdTipoVehiculos })
-                    .HasName("PRIMARY")
-                    .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                entity.HasKey(e => e.IdVehiculos)
+                    .HasName("PRIMARY");
 
                 entity.HasIndex(e => e.TipoVehiculosIdTipoVehiculos)
-                    .HasName("fk_Vehiculos_TipoVehiculos_idx");
+                    .HasName("fk_Vehiculos_TipoVehiculos1_idx");
 
-                entity.Property(e => e.IdVehiculos)
-                    .HasColumnName("idVehiculos")
-                    .ValueGeneratedOnAdd();
-
-                entity.Property(e => e.TipoVehiculosIdTipoVehiculos).HasColumnName("TipoVehiculos_idTipoVehiculos");
+                entity.Property(e => e.IdVehiculos).HasColumnName("idVehiculos");
 
                 entity.Property(e => e.Año)
                     .IsRequired()
@@ -184,6 +177,10 @@ namespace FinalProject.Models
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
+
+                entity.Property(e => e.Disponible)
+                    .HasColumnName("disponible")
+                    .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.Foto)
                     .IsRequired()
@@ -216,11 +213,13 @@ namespace FinalProject.Models
 
                 entity.Property(e => e.Precio).HasColumnName("precio");
 
+                entity.Property(e => e.TipoVehiculosIdTipoVehiculos).HasColumnName("TipoVehiculos_idTipoVehiculos");
+
                 entity.HasOne(d => d.TipoVehiculosIdTipoVehiculosNavigation)
                     .WithMany(p => p.Vehiculos)
                     .HasForeignKey(d => d.TipoVehiculosIdTipoVehiculos)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("fk_Vehiculos_TipoVehiculos");
+                    .HasConstraintName("fk_Vehiculos_TipoVehiculos1");
             });
 
             OnModelCreatingPartial(modelBuilder);
