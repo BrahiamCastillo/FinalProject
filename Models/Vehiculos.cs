@@ -24,7 +24,6 @@ namespace FinalProject.Models
         public float Capacidadcarga { get; set; }
         public int Pasajeros { get; set; }
         public int Nroseguro { get; set; }
-        public string Foto { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public sbyte Disponible { get; set; }

@@ -9,6 +9,36 @@ namespace FinalProject.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Sangre",
+                columns: table => new
+                {
+                    idSangre = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Sangre = table.Column<string>(type: "varchar(45)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PRIMARY", x => x.idSangre);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TipoVehiculos",
+                columns: table => new
+                {
+                    idTipoVehiculos = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    tipo = table.Column<string>(type: "varchar(45)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                        .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PRIMARY", x => x.idTipoVehiculos);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Clientes",
                 columns: table => new
                 {
@@ -29,16 +59,8 @@ namespace FinalProject.Migrations
                     licencia = table.Column<string>(type: "varchar(45)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
+                    Sangre_idSangre = table.Column<int>(nullable: false),
                     nacionalidad = table.Column<string>(type: "varchar(45)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                        .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
-                    tipodesangre = table.Column<string>(type: "varchar(45)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                        .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
-                    fotopersona = table.Column<string>(type: "varchar(45)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                        .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
-                    fotolicencia = table.Column<string>(type: "varchar(45)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                         .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
                     status = table.Column<sbyte>(nullable: false)
@@ -46,21 +68,12 @@ namespace FinalProject.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PRIMARY", x => x.idClientes);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TipoVehiculos",
-                columns: table => new
-                {
-                    idTipoVehiculos = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    tipo = table.Column<string>(type: "varchar(45)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                        .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PRIMARY", x => x.idTipoVehiculos);
+                    table.ForeignKey(
+                        name: "fk_Clientes_Sangre1",
+                        column: x => x.Sangre_idSangre,
+                        principalTable: "Sangre",
+                        principalColumn: "idSangre",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -86,9 +99,6 @@ namespace FinalProject.Migrations
                     capacidadcarga = table.Column<float>(nullable: false),
                     pasajeros = table.Column<int>(nullable: false),
                     nroseguro = table.Column<int>(nullable: false),
-                    foto = table.Column<string>(type: "varchar(45)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                        .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
                     latitude = table.Column<double>(nullable: false),
                     longitude = table.Column<double>(nullable: false),
                     disponible = table.Column<sbyte>(nullable: false, defaultValueSql: "'1'"),
@@ -115,7 +125,8 @@ namespace FinalProject.Migrations
                     Vehiculos_idVehiculos = table.Column<int>(nullable: false),
                     fecha_inicio = table.Column<DateTime>(type: "date", nullable: false),
                     fecha_fin = table.Column<DateTime>(type: "date", nullable: false),
-                    monto = table.Column<double>(nullable: false)
+                    monto = table.Column<double>(nullable: false),
+                    pagado = table.Column<sbyte>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -146,6 +157,11 @@ namespace FinalProject.Migrations
                 column: "Vehiculos_idVehiculos");
 
             migrationBuilder.CreateIndex(
+                name: "fk_Clientes_Sangre1_idx",
+                table: "Clientes",
+                column: "Sangre_idSangre");
+
+            migrationBuilder.CreateIndex(
                 name: "fk_Vehiculos_TipoVehiculos1_idx",
                 table: "Vehiculos",
                 column: "TipoVehiculos_idTipoVehiculos");
@@ -161,6 +177,9 @@ namespace FinalProject.Migrations
 
             migrationBuilder.DropTable(
                 name: "Vehiculos");
+
+            migrationBuilder.DropTable(
+                name: "Sangre");
 
             migrationBuilder.DropTable(
                 name: "TipoVehiculos");

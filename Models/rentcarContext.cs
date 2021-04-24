@@ -10,6 +10,7 @@ namespace FinalProject.Models
 {
     public partial class rentcarContext : DbContext
     {
+
         public rentcarContext(DbContextOptions<rentcarContext> options)
             : base(options)
         {
@@ -17,6 +18,7 @@ namespace FinalProject.Models
 
         public virtual DbSet<Alquileres> Alquileres { get; set; }
         public virtual DbSet<Clientes> Clientes { get; set; }
+        public virtual DbSet<Sangre> Sangre { get; set; }
         public virtual DbSet<TipoVehiculos> TipoVehiculos { get; set; }
         public virtual DbSet<Vehiculos> Vehiculos { get; set; }
 
@@ -50,6 +52,8 @@ namespace FinalProject.Models
 
                 entity.Property(e => e.Monto).HasColumnName("monto");
 
+                entity.Property(e => e.Pagado).HasColumnName("pagado");
+
                 entity.Property(e => e.VehiculosIdVehiculos).HasColumnName("Vehiculos_idVehiculos");
 
                 entity.HasOne(d => d.ClientesIdClientesNavigation)
@@ -70,6 +74,9 @@ namespace FinalProject.Models
                 entity.HasKey(e => e.IdClientes)
                     .HasName("PRIMARY");
 
+                entity.HasIndex(e => e.SangreIdSangre)
+                    .HasName("fk_Clientes_Sangre1_idx");
+
                 entity.Property(e => e.IdClientes).HasColumnName("idClientes");
 
                 entity.Property(e => e.Apellido)
@@ -89,20 +96,6 @@ namespace FinalProject.Models
                 entity.Property(e => e.Correo)
                     .IsRequired()
                     .HasColumnName("correo")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Fotolicencia)
-                    .IsRequired()
-                    .HasColumnName("fotolicencia")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
-                entity.Property(e => e.Fotopersona)
-                    .IsRequired()
-                    .HasColumnName("fotopersona")
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -128,11 +121,27 @@ namespace FinalProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.Property(e => e.SangreIdSangre).HasColumnName("Sangre_idSangre");
+
                 entity.Property(e => e.Status).HasColumnName("status");
 
-                entity.Property(e => e.Tipodesangre)
+                entity.HasOne(d => d.SangreIdSangreNavigation)
+                    .WithMany(p => p.Clientes)
+                    .HasForeignKey(d => d.SangreIdSangre)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("fk_Clientes_Sangre1");
+            });
+
+            modelBuilder.Entity<Sangre>(entity =>
+            {
+                entity.HasKey(e => e.IdSangre)
+                    .HasName("PRIMARY");
+
+                entity.Property(e => e.IdSangre).HasColumnName("idSangre");
+
+                entity.Property(e => e.Sangre1)
                     .IsRequired()
-                    .HasColumnName("tipodesangre")
+                    .HasColumnName("Sangre")
                     .HasColumnType("varchar(45)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
@@ -183,13 +192,6 @@ namespace FinalProject.Models
                     .HasColumnName("disponible")
                     .HasDefaultValueSql("'1'");
 
-                entity.Property(e => e.Foto)
-                    .IsRequired()
-                    .HasColumnName("foto")
-                    .HasColumnType("varchar(45)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_0900_ai_ci");
-
                 entity.Property(e => e.Latitude).HasColumnName("latitude");
 
                 entity.Property(e => e.Longitude).HasColumnName("longitude");
@@ -224,6 +226,119 @@ namespace FinalProject.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Vehiculos_TipoVehiculos1");
             });
+
+            //Seeds Sangre
+
+            modelBuilder.Entity<Sangre>().HasData(
+            new Sangre
+            {
+                IdSangre = 1,
+                Sangre1 = "O+",
+            }
+            );
+
+            modelBuilder.Entity<Sangre>().HasData(
+            new Sangre
+            {
+                IdSangre = 2,
+                Sangre1 = "O-",
+            }
+            );
+
+            modelBuilder.Entity<Sangre>().HasData(
+            new Sangre
+            {
+                IdSangre = 3,
+                Sangre1 = "A+",
+            }
+            );
+
+            modelBuilder.Entity<Sangre>().HasData(
+            new Sangre
+            {
+                IdSangre = 4,
+                Sangre1 = "A-",
+            }
+            );
+
+            modelBuilder.Entity<Sangre>().HasData(
+            new Sangre
+            {
+                IdSangre = 5,
+                Sangre1 = "B+",
+            }
+            );
+
+            modelBuilder.Entity<Sangre>().HasData(
+            new Sangre
+            {
+                IdSangre = 6,
+                Sangre1 = "B-",
+            }
+            );
+
+            modelBuilder.Entity<Sangre>().HasData(
+            new Sangre
+            {
+                IdSangre = 7,
+                Sangre1 = "AB+",
+            }
+            );
+
+            modelBuilder.Entity<Sangre>().HasData(
+            new Sangre
+            {
+                IdSangre = 8,
+                Sangre1 = "AB-",
+            }
+            );
+
+            //Seeds tipo de vehiculos
+
+            modelBuilder.Entity<TipoVehiculos>().HasData(
+                new TipoVehiculos
+                {
+                    IdTipoVehiculos = 1,
+                    Tipo = "Carro",
+
+                }
+            );
+
+            modelBuilder.Entity<TipoVehiculos>().HasData(
+                new TipoVehiculos
+                {
+                    IdTipoVehiculos = 2,
+                    Tipo = "Camioneta",
+
+                }
+            );
+
+            modelBuilder.Entity<TipoVehiculos>().HasData(
+                new TipoVehiculos
+                {
+                    IdTipoVehiculos = 3,
+                    Tipo = "Jeep",
+
+                }
+            );
+
+            modelBuilder.Entity<TipoVehiculos>().HasData(
+                new TipoVehiculos
+                {
+                    IdTipoVehiculos = 4,
+                    Tipo = "De lujo",
+
+                }
+            );
+
+            modelBuilder.Entity<TipoVehiculos>().HasData(
+                new TipoVehiculos
+                {
+                    IdTipoVehiculos = 5,
+                    Tipo = "Nave espacial",
+
+                }
+            );
 
             OnModelCreatingPartial(modelBuilder);
         }

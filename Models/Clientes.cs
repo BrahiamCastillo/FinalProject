@@ -20,12 +20,11 @@ namespace FinalProject.Models
         public string Apellido { get; set; }
         public string Correo { get; set; }
         public string Licencia { get; set; }
+        public int SangreIdSangre { get; set; }
         public string Nacionalidad { get; set; }
-        public string Tipodesangre { get; set; }
-        public string Fotopersona { get; set; }
-        public string Fotolicencia { get; set; }
         public sbyte Status { get; set; }
 
+        public virtual Sangre SangreIdSangreNavigation { get; set; }
         public virtual ICollection<Alquileres> Alquileres { get; set; }
     }
 }

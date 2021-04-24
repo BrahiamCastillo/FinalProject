@@ -15,6 +15,7 @@ namespace FinalProject.Models
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public double Monto { get; set; }
+        public sbyte Pagado { get; set; }
 
         public virtual Clientes ClientesIdClientesNavigation { get; set; }
         public virtual Vehiculos VehiculosIdVehiculosNavigation { get; set; }

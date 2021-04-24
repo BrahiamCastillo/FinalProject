@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(rentcarContext))]
-    [Migration("20210424134057_database_builded")]
+    [Migration("20210424221421_database_builded")]
     partial class database_builded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,10 @@ namespace FinalProject.Migrations
                     b.Property<double>("Monto")
                         .HasColumnName("monto")
                         .HasColumnType("double");
+
+                    b.Property<sbyte>("Pagado")
+                        .HasColumnName("pagado")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("VehiculosIdVehiculos")
                         .HasColumnName("Vehiculos_idVehiculos")
@@ -87,20 +91,6 @@ namespace FinalProject.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
 
-                    b.Property<string>("Fotolicencia")
-                        .IsRequired()
-                        .HasColumnName("fotolicencia")
-                        .HasColumnType("varchar(45)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
-
-                    b.Property<string>("Fotopersona")
-                        .IsRequired()
-                        .HasColumnName("fotopersona")
-                        .HasColumnType("varchar(45)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
-
                     b.Property<string>("Licencia")
                         .IsRequired()
                         .HasColumnName("licencia")
@@ -122,21 +112,41 @@ namespace FinalProject.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
 
+                    b.Property<int>("SangreIdSangre")
+                        .HasColumnName("Sangre_idSangre")
+                        .HasColumnType("int");
+
                     b.Property<sbyte>("Status")
                         .HasColumnName("status")
                         .HasColumnType("tinyint");
 
-                    b.Property<string>("Tipodesangre")
+                    b.HasKey("IdClientes")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex("SangreIdSangre")
+                        .HasName("fk_Clientes_Sangre1_idx");
+
+                    b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("FinalProject.Models.Sangre", b =>
+                {
+                    b.Property<int>("IdSangre")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("idSangre")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sangre1")
                         .IsRequired()
-                        .HasColumnName("tipodesangre")
+                        .HasColumnName("Sangre")
                         .HasColumnType("varchar(45)")
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
 
-                    b.HasKey("IdClientes")
+                    b.HasKey("IdSangre")
                         .HasName("PRIMARY");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Sangre");
                 });
 
             modelBuilder.Entity("FinalProject.Models.TipoVehiculos", b =>
@@ -189,13 +199,6 @@ namespace FinalProject.Migrations
                         .HasColumnName("disponible")
                         .HasColumnType("tinyint")
                         .HasDefaultValueSql("'1'");
-
-                    b.Property<string>("Foto")
-                        .IsRequired()
-                        .HasColumnName("foto")
-                        .HasColumnType("varchar(45)")
-                        .HasAnnotation("MySql:CharSet", "utf8mb4")
-                        .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
 
                     b.Property<double>("Latitude")
                         .HasColumnName("latitude")
@@ -260,6 +263,15 @@ namespace FinalProject.Migrations
                         .WithMany("Alquileres")
                         .HasForeignKey("VehiculosIdVehiculos")
                         .HasConstraintName("fk_Alquileres_Vehiculos1")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("FinalProject.Models.Clientes", b =>
+                {
+                    b.HasOne("FinalProject.Models.Sangre", "SangreIdSangreNavigation")
+                        .WithMany("Clientes")
+                        .HasForeignKey("SangreIdSangre")
+                        .HasConstraintName("fk_Clientes_Sangre1")
                         .IsRequired();
                 });
 

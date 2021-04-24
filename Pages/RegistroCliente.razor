@@ -3,7 +3,7 @@
 @using System.Linq;
 @using Microsoft.EntityFrameworkCore;
 @using FinalProject.Models;
-@inject DbContextOptions<rentcarContext> rentar 
+@inject DbContextOptions<rentcarContext> rentar
 
 <h3>Registrar clientes</h3>
 <hr />
@@ -11,7 +11,7 @@
     <form class="form">
         <div class="form-group">
             <label>Cedula</label>
-            <input class="form-control" placeholder="Cedula"  @bind="cedula" />
+            <input class="form-control" placeholder="Cedula" @bind="cedula" />
 
         </div>
 
@@ -35,26 +35,19 @@
             <input class="form-control" placeholder="Licencia " @bind="licencia" />
         </div>
 
-         <div class="form-group">
+        <div class="form-group">
             <label>Nacionalidad</label>
             <input class="form-control" placeholder="Nacionalidad" @bind="nacionalidad" />
         </div>
 
         <div class="form-group">
             <label>Tipo de sangre</label>
-            <input class="form-control" placeholder="Tipo de sangre" @bind="tipodesangre" />
-        </div>
-
-
-        <div class="form-group">
-            <label>Foto de la persona</label>
-            <input class="form-control" placeholder="Foto de la persona" @bind="fotopersona" />
-        </div>
-
-        <hr>
-        <div class="form-group">
-            <label>Foto de la licencia</label>
-            <input class="form-control" placeholder="Foto de la licencia" @bind="fotolicencia" />
+            <select class="form-control" @bind="tipodesangre">
+                @foreach (var bld in Blood())
+                {
+                    <option value="@bld.IdSangre">@bld.Sangre1</option>
+                }
+            </select>
         </div>
 
         <button @onclick="@agregar" class="btn btn-outline-success">Guardar</button>
@@ -69,24 +62,29 @@
     string correo;
     string licencia;
     string nacionalidad;
-    string tipodesangre;
-    string fotopersona;
-    string fotolicencia;
-    
+    int tipodesangre;
 
- void agregar()
+    rentcarContext db;
+
+    protected override void OnInitialized()
     {
-        rentcarContext db = new rentcarContext(rentar);
+        db = new rentcarContext(rentar);
+    }
+
+    List<Sangre> Blood() => db.Sangre.ToList();
+
+
+
+    void agregar()
+    {
         Clientes cliente = new Clientes();
-        
+
         cliente.Cedula = cedula;
         cliente.Nombre = nombre;
         cliente.Apellido = apellido;
         cliente.Correo = correo;
         cliente.Licencia = licencia;
-        cliente.Tipodesangre = tipodesangre;
-        cliente.Fotopersona = fotopersona;
-        cliente.Fotolicencia = fotolicencia;
+        cliente.SangreIdSangre = tipodesangre;
 
         db.Add(cliente);
         db.SaveChanges();
