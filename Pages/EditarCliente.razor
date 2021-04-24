@@ -1,0 +1,154 @@
+@page "/editarcliente"
+@using System;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using FinalProject.Models;
+@inject DbContextOptions<rentcarContext> rentar
+
+<h3>Editar Clientes</h3>
+<hr />
+<div class="container">
+    <div class="form-group">
+        <label>Ingrese la cédula del cliente:</label>
+        <input class="form-control" placeholder="Cedula" @bind="cedula" />
+    </div>
+    <button @onclick="@Cargar" class="btn btn-outline-success">Cargar Cliente</button>
+</div>
+<hr>
+@if (activated == true && enable == true)
+{
+
+    <div class="container">
+    <form class="form">
+        <div class="form-group">
+            <label>Nombre</label>
+            <input class="form-control" placeholder="Nombre" @bind-value="nombre" />
+        </div>
+
+        <div class="form-group">
+            <label>Apellido</label>
+            <input class="form-control" placeholder="Apellido" @bind-value="apellido" />
+        </div>
+
+        <div class="form-group">
+            <label>Correo</label>
+            <input class="form-control" placeholder="Correo" @bind-value="correo" />
+        </div>
+
+        <div class="form-group">
+            <label>Licencia</label>
+            <input class="form-control" placeholder="Licencia " @bind-value="licencia" />
+        </div>
+
+        <div class="form-group">
+            <label>Nacionalidad</label>
+            <input class="form-control" placeholder="Nacionalidad" @bind-value="nacionalidad" />
+        </div>
+
+        <div class="form-group">
+            <label>Tipo de sangre</label>
+            <input class="form-control" placeholder="Tipo de sangre" @bind-value="tipodesangre" />
+        </div>
+
+
+        <div class="form-group">
+            <label>Foto de la persona</label>
+            <input class="form-control" placeholder="Foto de la persona" @bind-value="fotopersona" />
+        </div>
+
+        <hr>
+        <div class="form-group">
+            <label>Foto de la licencia</label>
+            <input class="form-control" placeholder="Foto de la licencia" @bind-value="fotolicencia" />
+        </div>
+        <button @onclick="@Editar" class="btn btn-outline-success">Editar</button>
+    </form>
+</div>
+    <hr>
+    <h3>@notification</h3>
+}
+else if (activated == true && enable == false){
+
+    <h2>No hay un ciudadano registrado con esa cédula.</h2>
+}
+
+
+@code{
+
+    string cedula;
+    string nombre;
+    string apellido;
+    string correo;
+    string licencia;
+    string nacionalidad;
+    string tipodesangre;
+    string fotopersona;
+    string fotolicencia;
+
+    string notification = "";
+
+    bool enable = true;
+    bool activated = false;
+
+    Clientes cliente = null;
+    rentcarContext db;
+
+
+    protected override void OnInitialized()
+    {
+
+        db = new rentcarContext(rentar);
+
+    }
+    void Cargar()
+    {
+
+        cliente = db.Clientes.Where(C => C.Cedula == cedula).SingleOrDefault();
+
+        if (cliente == null)
+        {
+
+            enable = false;
+        }
+        else
+        {
+
+            nombre = cliente.Nombre;
+            apellido = cliente.Apellido;
+            correo = cliente.Correo;
+            licencia = cliente.Licencia;
+            nacionalidad = cliente.Nacionalidad;
+            tipodesangre = cliente.Tipodesangre;
+            fotopersona = cliente.Fotopersona;
+            fotolicencia = cliente.Fotolicencia;
+        }
+
+        activated = true;
+
+    }
+    void Editar()
+    {
+
+        try
+        {
+            cliente.Cedula = cedula;
+            cliente.Nombre = nombre;
+            cliente.Apellido = apellido;
+            cliente.Correo = correo;
+            cliente.Licencia = licencia;
+            cliente.Nacionalidad = nacionalidad;
+            cliente.Tipodesangre = tipodesangre;
+            cliente.Fotopersona = fotopersona;
+            cliente.Fotolicencia = fotolicencia;
+
+
+            db.SaveChanges();
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            notification = "La edición no se pudo realizar";
+
+        }
+    }
+}

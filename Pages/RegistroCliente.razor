@@ -1,4 +1,4 @@
-@page "/registroCliente"
+@page "/registrocliente"
 @using System;
 @using System.Linq;
 @using Microsoft.EntityFrameworkCore;
@@ -58,7 +58,6 @@
         </div>
 
         <button @onclick="agregar" class="btn btn-outline-success">Guardar</button>
-        <button @onclick="Editar" class="btn btn-outline-success">Editar</button>
     </form>
 </div>
 
@@ -90,23 +89,6 @@
         cliente.Fotolicencia = fotolicencia;
 
         db.Add(cliente);
-        db.SaveChanges();
-    }
-
-    void Editar(){
-       rentcarContext db = new rentcarContext(rentar);
-       var cliente = db.Clientes.Where(C => C.Cedula == cedula).SingleOrDefault();
-        
-        cliente.Cedula = cedula;
-        cliente.Nombre = nombre;
-        cliente.Apellido = apellido;
-        cliente.Correo = correo;
-        cliente.Licencia = licencia;
-        cliente.Tipodesangre = tipodesangre;
-        cliente.Fotopersona = fotopersona;
-        cliente.Fotolicencia = fotolicencia;
-
-    
         db.SaveChanges();
     }
 }
