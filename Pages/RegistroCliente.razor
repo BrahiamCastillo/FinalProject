@@ -1,0 +1,112 @@
+@page "/registroCliente"
+@using System;
+@using System.Linq;
+@using Microsoft.EntityFrameworkCore;
+@using FinalProject.Models;
+@inject DbContextOptions<rentcarContext> rentar 
+
+<h3>Registrar clientes</h3>
+<hr />
+<div class="container">
+    <form class="form">
+        <div class="form-group">
+            <label>Cedula</label>
+            <input class="form-control" placeholder="Cedula"  @bind="cedula" />
+
+        </div>
+
+        <div class="form-group">
+            <label>Nombre</label>
+            <input class="form-control" placeholder="Nombre" @bind="nombre" />
+        </div>
+
+        <div class="form-group">
+            <label>Apellido</label>
+            <input class="form-control" placeholder="Apellido" @bind="apellido" />
+        </div>
+
+        <div class="form-group">
+            <label>Correo</label>
+            <input class="form-control" placeholder="Correo" @bind="correo" />
+        </div>
+
+        <div class="form-group">
+            <label>Licencia</label>
+            <input class="form-control" placeholder="Licencia " @bind="licencia" />
+        </div>
+
+         <div class="form-group">
+            <label>Nacionalidad</label>
+            <input class="form-control" placeholder="Nacionalidad" @bind="nacionalidad" />
+        </div>
+
+        <div class="form-group">
+            <label>Tipo de sangre</label>
+            <input class="form-control" placeholder="Tipo de sangre" @bind="tipodesangre" />
+        </div>
+
+
+        <div class="form-group">
+            <label>Foto de la persona</label>
+            <input class="form-control" placeholder="Foto de la persona" @bind="fotopersona" />
+        </div>
+
+        <hr>
+        <div class="form-group">
+            <label>Foto de la licencia</label>
+            <input class="form-control" placeholder="Foto de la licencia" @bind="fotolicencia" />
+        </div>
+
+        <button @onclick="agregar" class="btn btn-outline-success">Guardar</button>
+        <button @onclick="Editar" class="btn btn-outline-success">Editar</button>
+    </form>
+</div>
+
+@code{
+
+    string cedula;
+    string nombre;
+    string apellido;
+    string correo;
+    string licencia;
+    string nacionalidad;
+    string tipodesangre;
+    string fotopersona;
+    string fotolicencia;
+    
+
+ void agregar()
+    {
+        rentcarContext db = new rentcarContext(rentar);
+        Clientes cliente = new Clientes();
+        
+        cliente.Cedula = cedula;
+        cliente.Nombre = nombre;
+        cliente.Apellido = apellido;
+        cliente.Correo = correo;
+        cliente.Licencia = licencia;
+        cliente.Tipodesangre = tipodesangre;
+        cliente.Fotopersona = fotopersona;
+        cliente.Fotolicencia = fotolicencia;
+
+        db.Add(cliente);
+        db.SaveChanges();
+    }
+
+    void Editar(){
+       rentcarContext db = new rentcarContext(rentar);
+       var cliente = db.Clientes.Where(C => C.Cedula == cedula);
+        
+        cliente.Cedula = cedula;
+        cliente.Nombre = nombre;
+        cliente.Apellido = apellido;
+        cliente.Correo = correo;
+        cliente.Licencia = licencia;
+        cliente.Tipodesangre = tipodesangre;
+        cliente.Fotopersona = fotopersona;
+        cliente.Fotolicencia = fotolicencia;
+
+    
+        db.SaveChanges();
+    }
+}

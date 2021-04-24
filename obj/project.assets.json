@@ -5421,24 +5421,26 @@
     ]
   },
   "packageFolders": {
-    "/home/brahiam/.nuget/packages/": {}
+    "C:\\Users\\Latitude\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/brahiam/ProgIII/FinalProject/FinalProject.csproj",
+      "projectUniqueName": "C:\\Users\\Latitude\\Desktop\\FinalProject\\FinalProject.csproj",
       "projectName": "FinalProject",
-      "projectPath": "/home/brahiam/ProgIII/FinalProject/FinalProject.csproj",
-      "packagesPath": "/home/brahiam/.nuget/packages/",
-      "outputPath": "/home/brahiam/ProgIII/FinalProject/obj/",
+      "projectPath": "C:\\Users\\Latitude\\Desktop\\FinalProject\\FinalProject.csproj",
+      "packagesPath": "C:\\Users\\Latitude\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Latitude\\Desktop\\FinalProject\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/brahiam/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Latitude\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -5492,7 +5494,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.404/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.408\\RuntimeIdentifierGraph.json"
       }
     }
   }
