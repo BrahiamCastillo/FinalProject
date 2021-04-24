@@ -27,7 +27,7 @@
                 <td>@clt.Apellido</td>
                 <td>@clt.Nacionalidad</td>
                 <td>
-                    <button @onclick="()=>Change(clt.IdClientes)" class="btn btn-dark">@result(@clt.IdClientes)</button>
+                    <button @onclick="()=>Change(clt.Status)" class="btn btn-dark">@result(@clt.IdClientes)</button>
                 </td>
             </tr>
         }
@@ -81,15 +81,15 @@
 
         var customer = context.Clientes.Where(i => i.IdClientes == id).SingleOrDefault();
 
-        if (customer.IdClientes == 1)
+        if (customer.Status == 1)
         {
 
-            customer.IdClientes = 0;
+            customer.Status = 0;
         }
-        else if (customer.IdClientes == 0)
+        else if (customer.Status == 0)
         {
 
-            customer.IdClientes = 1;
+            customer.Status = 1;
         }
 
         context.SaveChanges();

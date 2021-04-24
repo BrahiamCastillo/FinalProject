@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalProject.Migrations
 {
     [DbContext(typeof(rentcarContext))]
-    [Migration("20210423010108_database_builded")]
+    [Migration("20210424134057_database_builded")]
     partial class database_builded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,6 +122,10 @@ namespace FinalProject.Migrations
                         .HasAnnotation("MySql:CharSet", "utf8mb4")
                         .HasAnnotation("MySql:Collation", "utf8mb4_0900_ai_ci");
 
+                    b.Property<sbyte>("Status")
+                        .HasColumnName("status")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("Tipodesangre")
                         .IsRequired()
                         .HasColumnName("tipodesangre")
@@ -226,6 +230,10 @@ namespace FinalProject.Migrations
                     b.Property<float>("Precio")
                         .HasColumnName("precio")
                         .HasColumnType("float");
+
+                    b.Property<sbyte>("Status")
+                        .HasColumnName("status")
+                        .HasColumnType("tinyint");
 
                     b.Property<int>("TipoVehiculosIdTipoVehiculos")
                         .HasColumnName("TipoVehiculos_idTipoVehiculos")

@@ -10,7 +10,6 @@ namespace FinalProject.Models
 {
     public partial class rentcarContext : DbContext
     {
-
         public rentcarContext(DbContextOptions<rentcarContext> options)
             : base(options)
         {
@@ -129,6 +128,8 @@ namespace FinalProject.Models
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_0900_ai_ci");
 
+                entity.Property(e => e.Status).HasColumnName("status");
+
                 entity.Property(e => e.Tipodesangre)
                     .IsRequired()
                     .HasColumnName("tipodesangre")
@@ -212,6 +213,8 @@ namespace FinalProject.Models
                 entity.Property(e => e.Pasajeros).HasColumnName("pasajeros");
 
                 entity.Property(e => e.Precio).HasColumnName("precio");
+
+                entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.TipoVehiculosIdTipoVehiculos).HasColumnName("TipoVehiculos_idTipoVehiculos");
 

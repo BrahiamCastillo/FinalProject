@@ -28,6 +28,7 @@ namespace FinalProject.Models
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public sbyte Disponible { get; set; }
+        public sbyte Status { get; set; }
 
         public virtual TipoVehiculos TipoVehiculosIdTipoVehiculosNavigation { get; set; }
         public virtual ICollection<Alquileres> Alquileres { get; set; }

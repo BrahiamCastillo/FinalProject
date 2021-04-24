@@ -24,6 +24,7 @@ namespace FinalProject.Models
         public string Tipodesangre { get; set; }
         public string Fotopersona { get; set; }
         public string Fotolicencia { get; set; }
+        public sbyte Status { get; set; }
 
         public virtual ICollection<Alquileres> Alquileres { get; set; }
     }

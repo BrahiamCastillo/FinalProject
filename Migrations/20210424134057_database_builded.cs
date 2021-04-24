@@ -40,7 +40,8 @@ namespace FinalProject.Migrations
                         .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
                     fotolicencia = table.Column<string>(type: "varchar(45)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
-                        .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci")
+                        .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
+                    status = table.Column<sbyte>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,7 +91,8 @@ namespace FinalProject.Migrations
                         .Annotation("MySql:Collation", "utf8mb4_0900_ai_ci"),
                     latitude = table.Column<double>(nullable: false),
                     longitude = table.Column<double>(nullable: false),
-                    disponible = table.Column<sbyte>(nullable: false, defaultValueSql: "'1'")
+                    disponible = table.Column<sbyte>(nullable: false, defaultValueSql: "'1'"),
+                    status = table.Column<sbyte>(nullable: false)
                 },
                 constraints: table =>
                 {
