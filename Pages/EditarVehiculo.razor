@@ -1,13 +1,23 @@
-@page "/registroV"
+@page "/editarV"
 @using System;
 @using System.Linq;
 @using Microsoft.EntityFrameworkCore;
 @using FinalProject.Models;
 @inject DbContextOptions<rentcarContext> rentar  
-    
-<h3>Registrar Vehiculos</h3>
+
+<h3>Editar Vehiculos</h3>
 <hr />
 <div class="container">
+    <div class="form-group">
+        <label>Ingrese el numero de seguro del vehiculo:</label>
+        <input class="form-control" placeholder="Numero de seguro" @bind="seguro" />
+    </div>
+    <button @onclick="@Cargar" class="btn btn-outline-success">Cargar Cehiculos</button>
+</div>
+<hr>
+@if (activated == true && enable == true)
+{
+    <div class="container">
     <form class="form">
         <div class="form-group">
             <label>Marca</label>
@@ -54,13 +64,6 @@
             <label>Pasajeros</label>
             <input class="form-control" placeholder="pasajeros" @bind="pasajeros" />
         </div>
-
-
-        <div class="form-group">
-            <label>Numero de seguro</label>
-            <input class="form-control" placeholder="Numero de seguro" @bind="seguro" />
-        </div>
-
         <hr>
         <div class="form-group">
             <label>Latitud</label>
@@ -72,10 +75,12 @@
             <input class="form-control" placeholder="Longitud" @bind="longitud" />
         </div>
 
-        <button @onclick="agregar" class="btn btn-outline-success">Guardar</button>
+        <button @onclick="@Editar" class="btn btn-outline-success">Editar</button>
     </form>
 </div>
-
+    <hr>
+    <h3>@notification</h3>
+}    
 @code
 {
     string marca;
@@ -90,31 +95,73 @@
     int pasajeros;
     double latitud;
     double longitud;
-     rentcarContext db;
+
+    string notification = "";
+    bool enable = true;
+    bool activated = false;
+    Vehiculos vehiculo = null;
+    rentcarContext db;
+
+    
+
     protected override void OnInitialized()
     {
         db = new rentcarContext(rentar);
     }
 
     List<TipoVehiculos> VehiclesTypes() => db.TipoVehiculos.ToList();
-
-    void agregar()
+    
+    void Cargar()
     {
-        Vehiculos carro = new Vehiculos();
-        
-        carro.Marca = marca;
-        carro.Modelo = modelo;
-        carro.TipoVehiculosIdTipoVehiculos = tipo;
-        carro.Año = year;
-        carro.Nroseguro = seguro;
-        carro.Precio = Pdia;
-        carro.Capacidadcarga = carga;
-        carro.Pasajeros = pasajeros;
-        carro.Latitude = latitud;
-        carro.Longitude = longitud;
-        db.Vehiculos.Add(carro);
-        db.SaveChanges();
-    }
+        vehiculo = db.Vehiculos.Where(C => C.Nroseguro == seguro).SingleOrDefault();
 
+         
+
+        if(vehiculo == null)
+        {
+            enable = false;
+        }
+        else
+        {
+            marca = vehiculo.Marca;
+            modelo = vehiculo.Modelo;
+            year = vehiculo.Año;
+            color = vehiculo.Color;
+            Pdia = vehiculo.Precio;
+            tipo = vehiculo.TipoVehiculosIdTipoVehiculos;
+            carga = vehiculo.Capacidadcarga;
+            pasajeros = vehiculo.Pasajeros;
+            latitud = vehiculo.Latitude;
+            longitud = vehiculo.Longitude;
+
+            
+        }
+        activated = true;
+    }
+    void Editar()
+    {
+        try
+        {
+            vehiculo.Nroseguro = seguro;
+            vehiculo.Año = year;
+            vehiculo.Capacidadcarga = carga;
+            vehiculo.Color = color;
+            vehiculo.Latitude = latitud;
+            vehiculo.Longitude = longitud;
+            vehiculo.Marca = marca;
+            vehiculo.Pasajeros = pasajeros;
+            vehiculo.Precio = Pdia;
+            vehiculo.TipoVehiculosIdTipoVehiculos = tipo;
+
+            db.SaveChanges();
+        }
+        catch(System.Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            notification = "La edicion no de pudo realizar";        
+        }
+    }
 }
 
+
+    
