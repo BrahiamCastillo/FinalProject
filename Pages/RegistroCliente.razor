@@ -95,7 +95,7 @@
 
     void Editar(){
        rentcarContext db = new rentcarContext(rentar);
-       var cliente = db.Clientes.Where(C => C.Cedula == cedula);
+       var cliente = db.Clientes.Where(C => C.Cedula == cedula).SingleOrDefault();
         
         cliente.Cedula = cedula;
         cliente.Nombre = nombre;

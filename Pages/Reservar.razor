@@ -85,6 +85,9 @@ else
         try
         {
             ctx.Alquileres.Add(newAlquiler);
+            var vehicle = ctx.Vehiculos.Where(i => i.IdVehiculos == vehiculo).SingleOrDefault();
+            vehicle.Disponible = 0;
+            ctx.SaveChanges();
         }
         catch (System.Exception ex)
         {
