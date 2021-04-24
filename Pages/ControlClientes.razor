@@ -1,0 +1,97 @@
+@page "/controlcliente"
+@inject DbContextOptions<rentcarContext> rentar
+
+<h1>Control de Clientes.</h1>
+<hr>
+
+@if(Clientes().Count > 0) {
+
+
+<table class="table table-dark">
+    <thead>
+        <tr>
+            <th>Cédula</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Nacionalidad</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var clt in Clientes())
+        {
+
+            <tr>
+                <td>@clt.Cedula</td>
+                <td>@clt.Nombre</td>
+                <td>@clt.Apellido</td>
+                <td>@clt.Nacionalidad</td>
+                <td>
+                    <button @onclick="()=>Change(clt.IdClientes)" class="btn btn-dark">@result(@clt.IdClientes)</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+} else {
+
+<h3>No hay clientes registrados.</h3>
+
+}
+
+
+@code {
+
+    List<Clientes> Clientes() => new rentcarContext(rentar).Clientes.ToList();
+
+    string text = "";
+
+    rentcarContext context;
+
+    protected override void OnInitialized()
+    {
+        context = new rentcarContext(rentar);
+    }
+
+
+
+    string result(int response)
+    {
+
+        string final;
+
+        if (response == 0)
+        {
+
+            final = "Habilitar";
+        }
+        else
+        {
+
+            final = "Inhabilitar";
+        }
+
+        return final;
+    }
+
+    void Change(int id)
+    {
+
+        var customer = context.Clientes.Where(i => i.IdClientes == id).SingleOrDefault();
+
+        if (customer.IdClientes == 1)
+        {
+
+            customer.IdClientes = 0;
+        }
+        else if (customer.IdClientes == 0)
+        {
+
+            customer.IdClientes = 1;
+        }
+
+        context.SaveChanges();
+    }
+}
