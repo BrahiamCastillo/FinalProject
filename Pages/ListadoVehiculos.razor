@@ -1,0 +1,70 @@
+@page "/listadoV"
+@using FinalProject.Models;
+@inject DbContextOptions<rentcarContext> rentar
+
+<h1>Listado de Vehiculos.</h1>
+<hr>    
+
+<div class="form-group">
+    <label for="fecha-inicio">Selecciona la fecha de inicio.</label>
+    <input @bind-value="@fecha_inicio" type="date" name="fecha-inicio" id="fecha-inicio">
+    
+                    
+            
+</div>
+<div class="form-group">
+    <button onclick="@mostrar" class="btn btn-dark">Buscar</button>
+</div>
+
+
+
+
+
+
+
+@code
+{
+    DateTime fecha_inicio;
+    List<Vehiculos> Vehiculos() => new rentcarContext(rentar).Vehiculos.ToList();
+    rentcarContext context = new rentcarContext(rentar);
+     Alquileres newAlquiler = new Alquileres();
+    //var customer = context.Vehiculos.Where(i => i.IdVehiculos == id).SingleOrDefault();//no se si esto va o que
+
+    void mostrar()
+    {
+        if(newAlquiler.FechaInicio == fecha-inicio){
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Año</th>
+                        <th>Color</th>
+                        
+                        
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var clt in Vehiculos())
+                    {
+
+                        <tr>
+                            <td>@clt.Marca</td>
+                            <td>@clt.Modelo</td>
+                            <td>@clt.Año</td>
+                            <td>@clt.Color</td>
+                            
+                            
+                            
+
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }else{
+
+        }
+    }
+}
