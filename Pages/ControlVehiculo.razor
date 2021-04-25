@@ -55,10 +55,6 @@
 
     <hr>
 
-<div class="input-group-append">
-    <div id="map" style="height:500px;width:100%;"></div>
-</div>
-
 
 }
 else
@@ -68,7 +64,9 @@ else
 
 }
 
-
+<div class="input-group-append">
+    <div id="map" style="height:500px;width:100%;"></div>
+</div>
 @code {
 
     List<Vehiculos> Vehiculos() => new rentcarContext(rentar).Vehiculos.ToList();
