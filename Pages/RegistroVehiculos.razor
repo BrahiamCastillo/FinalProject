@@ -3,7 +3,9 @@
 @using System.Linq;
 @using Microsoft.EntityFrameworkCore;
 @using FinalProject.Models;
-@inject DbContextOptions<rentcarContext> rentar  
+@inject DbContextOptions<rentcarContext> rentar 
+@inject IJSRuntime JSRuntime
+ 
     
 <h3>Registrar Vehiculos</h3>
 <hr />
@@ -62,6 +64,13 @@
         </div>
 
         <hr>
+        <hr>
+        <h3>Seleccione su ubicación y proceda a introducir la longitud y latitud</h3>
+        <hr>
+        <div class="input-group-append">
+            <div id="map" style="height:500px;width:100%;"></div>
+        </div>
+        <hr>
         <div class="form-group">
             <label>Latitud</label>
             <input class="form-control" placeholder="Latitud" @bind="latitud" />
@@ -116,6 +125,15 @@
         carro.Status = 1;
         db.Vehiculos.Add(carro);
         db.SaveChanges();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initAdd");
+        }
+
     }
 
 }
