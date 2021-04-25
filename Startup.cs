@@ -29,7 +29,7 @@ namespace FinalProject
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddServerSideBlazor();
+            services.AddServerSideBlazor().AddCircuitOptions(options => {  options.DetailedErrors = true; });
             services.AddSingleton<WeatherForecastService>();
             services.AddDbContext<rentcarContext>(options =>
             options.UseMySql(Configuration.GetConnectionString("rentcar")));
