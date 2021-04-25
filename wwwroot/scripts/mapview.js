@@ -12,6 +12,7 @@ function initMap(vehiculos) {
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(veh.latitude, veh.longitude),
             map: map,
+            label: veh.marca + " " + veh.modelo
         });
 
     })
