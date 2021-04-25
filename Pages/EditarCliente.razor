@@ -47,7 +47,6 @@
 
         <div class="form-group">
             <label>Tipo de sangre</label>
-            <input class="form-control disabled" placeholder="Tipo de sangre" @bind-value="tipodesangre" />
             <select class="form-control" @bind="tipodesangre">
                 @foreach (var bld in Blood())
                 {

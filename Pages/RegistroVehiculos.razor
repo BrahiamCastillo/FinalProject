@@ -106,12 +106,14 @@
         carro.Modelo = modelo;
         carro.TipoVehiculosIdTipoVehiculos = tipo;
         carro.Año = year;
+        carro.Color = color;
         carro.Nroseguro = seguro;
         carro.Precio = Pdia;
         carro.Capacidadcarga = carga;
         carro.Pasajeros = pasajeros;
         carro.Latitude = latitud;
         carro.Longitude = longitud;
+        carro.Status = 1;
         db.Vehiculos.Add(carro);
         db.SaveChanges();
     }

@@ -18,6 +18,8 @@
             <th>Capacidad de carga</th>
             <th>Pasajeros</th>
             <th>Numero de seguro</th>
+            <th>Status</th>
+            <th>Acción</th>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +34,11 @@
                 <td>@clt.Capacidadcarga</td>
                 <td>@clt.Pasajeros</td>
                 <td>@clt.Nroseguro</td>
+                @if(clt.Disponible == 0) {
+                    <td>No disponible</td>
+                } else {
+                    <td>Disponible</td>
+                }
 
                 <td>
                     <button @onclick="()=>Change(clt.IdVehiculos)" class="btn btn-dark">@result(@clt.Status)</button>
