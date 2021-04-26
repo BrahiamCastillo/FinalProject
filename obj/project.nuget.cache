@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "hjHnefQU+nlfXty+7i0DEBoo2++OwvIOVLupAh86KYvrBQ4b1HENayEcqTHQaNHbd0EbAmhTQZ4BqKlGlZ8q0w==",
+  "dgSpecHash": "ph702xZU8i1e4Ove4N8fTaCzFvhwRIQbwgw1WfBnlBAmvtZKUFwvQCzfPUTYoJ41M8zepheXl17FK1FMLHO7aw==",
   "success": true,
   "projectFilePath": "/home/brahiam/ProgIII/FinalProject/FinalProject.csproj",
   "expectedPackageFiles": [
+    "/home/brahiam/.nuget/packages/microsoft.aspnetcore.azureappservices.siteextension/3.1.0/microsoft.aspnetcore.azureappservices.siteextension.3.1.0.nupkg.sha512",
     "/home/brahiam/.nuget/packages/microsoft.bcl.asyncinterfaces/1.1.1/microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "/home/brahiam/.nuget/packages/microsoft.bcl.hashcode/1.1.1/microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
     "/home/brahiam/.nuget/packages/microsoft.csharp/4.7.0/microsoft.csharp.4.7.0.nupkg.sha512",
