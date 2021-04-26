@@ -84,9 +84,11 @@
         cliente.Apellido = apellido;
         cliente.Correo = correo;
         cliente.Licencia = licencia;
+        cliente.Nacionalidad = nacionalidad;
         cliente.SangreIdSangre = tipodesangre;
+        cliente.Status = 1;
 
-        db.Add(cliente);
+        db.Clientes.Add(cliente);
         db.SaveChanges();
     }
 }

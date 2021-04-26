@@ -2,9 +2,15 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+<<<<<<< HEAD
     <UserSecretsId>610ac25a-b8fb-4aae-bfcf-a4821ebef6b2</UserSecretsId>
+=======
+    <EnvironmentName>Production</EnvironmentName>
+    <UserSecretsId>098425e3-259a-48cf-ab45-fc66800e8293</UserSecretsId>
+>>>>>>> ff9de0153068944cb197eb9ca65e682da71f6145
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.AzureAppServices.SiteExtension" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.12">

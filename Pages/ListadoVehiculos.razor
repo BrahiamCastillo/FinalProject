@@ -7,37 +7,56 @@
 
 <h1>Listado de Vehiculos.</h1>
 <hr>    
-@if(Vehiculos().Count > 0){
- <table class="table table-dark">
-    <thead>
-        <tr>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>Año</th>
-            <th>Color</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var clt in Vehiculos()){
+<div class="form-group">
+        <label for="fecha-inicio">Selecciona la fecha de inicio.</label>
+        <input @bind-value="@fecha_inicio" type="date" name="fecha-inicio" id="fecha-inicio">
+</div>
+<div class="form-group">
+        <label for="fecha-fin">Selecciona la fecha del fin.</label>
+        <input @bind-value="@fecha_fin" type="date" name="fecha-fin" id="fecha-fin">
+</div>
 
-            <tr>
-                <td>@clt.Marca</td>
-                <td>@clt.Modelo</td>
-                <td>@clt.Año</td>
-                <td>@clt.Color</td>              
-            </tr>
-        }
-    </tbody>
-</table>
-}
-
+<div class="form-group">
+    <button @onclick="mostar" class="btn btn-dark">Mostrar Lista</button>
+</div>
 
 
 
 @code
 {
+    DateTime fecha_inicio;
+    DateTime fecha_fin;
     
-    List<Vehiculos> Vehiculos() => new rentcarContext(rentar).Vehiculos.ToList();
+   List<Alquileres> automovil = new rentcarContext(rentar).Alquileres.Where(m => m.FechaInicio >= fecha_inicio && a => a.FechaFin <= fecha_fin ).ToList();
+
+   void mostar()
+   {
+       if(automovil.Count > 0){
+           <hr>
+           <hr>
+           <table class="table table-dark table-hover">
+             <thead>
+                 <tr>
+                     <th>Marca</th>
+                     <th>Modelo</th>
+                     <th>Color</th>
+                     <th>Año</th>
+                     
+                 </tr>
+             </thead>  
+             <tbody>
+                 @foreach (var aut in automovil){
+                     <tr>
+                        <td>@aut.VehiculosIdVehiculosNavigation.Marca</td>
+                        <td>@aut.VehiculosIdVehiculosNavigation.Modelo</td>
+                        <td>@aut.VehiculosIdVehiculosNavigation.Color</td>
+                        <td>@aut.VehiculosIdVehiculosNavigation.Año</td>
+                     </tr>
+                 }
+             </tbody>
+
+           </table>
+       }
+   }
     
 }

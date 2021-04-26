@@ -1,0 +1,83 @@
+@page "/pagar"
+@using FinalProject.Helpers
+@inject DbContextOptions<rentcarContext> options
+
+<h3>Pagar Factura</h3>
+<hr />
+<div class="container">
+    <div class="form-group">
+        <label>Ingrese la ID de la factura:</label>
+        <input @bind="@idfactura" class="form-control" placeholder="ID Factura" />
+    </div>
+    <button @onclick="@Cargar" class="btn btn-outline-success">Cargar Factura</button>
+</div>
+<hr>
+@if (activate == false)
+{
+
+    <h3>No se encuentra la factura con dicha ID.</h3>
+}
+else
+{
+    <table class="table table-dark">
+    <thead>
+        <tr>
+            <th>ID Factura</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@factura.IdAlquileres</td>
+            <td>@factura.Monto</td>
+        </tr>
+    </tbody>
+</table>
+    <hr>
+    <button @onclick="@Pagar" class="btn btn-danger">Pagar</button>
+}
+
+@code {
+
+    int idfactura;
+
+    rentcarContext context;
+    Alquileres factura;
+
+    bool activate = false;
+    protected override void OnInitialized()
+    {
+        context = new rentcarContext(options);
+    }
+
+
+
+    void Cargar()
+    {
+        try
+        {
+            factura = context.Alquileres.Where(f => f.IdAlquileres == idfactura).SingleOrDefault();
+
+            activate = true;
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+    void Pagar()
+    {
+
+        factura.Pagado = 1;
+        factura.Monto = 0;
+        var client = context.Clientes.Where(c => c.IdClientes == factura.ClientesIdClientes).SingleOrDefault();
+        string name = client.Nombre + " " + client.Apellido;
+        var vehicle = context.Vehiculos.Where(v => v.IdVehiculos == factura.VehiculosIdVehiculos).SingleOrDefault();
+        vehicle.Disponible = 1;
+        context.SaveChanges();
+        string vehicleName = vehicle.Marca + " " + vehicle.Modelo;
+        HtmlFormat html = new HtmlFormat();
+        html.htmlMake(factura, name, vehicleName, 0, 0);
+    }
+} 

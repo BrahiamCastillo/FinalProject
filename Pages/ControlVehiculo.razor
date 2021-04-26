@@ -1,14 +1,16 @@
 @page "/controlV"
 @using FinalProject.Models;
 @inject DbContextOptions<rentcarContext> rentar
+@inject IJSRuntime JSRuntime
 
 <h1>Control de Vehiculos.</h1>
 <hr>
 
-@if(Vehiculos().Count > 0) {
+@if (Vehiculos().Count > 0)
+{
 
 
-<table class="table table-dark">
+    <table class="table table-dark">
     <thead>
         <tr>
             <th>Marca</th>
@@ -18,37 +20,53 @@
             <th>Capacidad de carga</th>
             <th>Pasajeros</th>
             <th>Numero de seguro</th>
+            <th>Status</th>
+            <th>Acción</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var clt in Vehiculos())
-        {
+            {
 
-            <tr>
-                <td>@clt.Marca</td>
-                <td>@clt.Modelo</td>
-                <td>@clt.Año</td>
-                <td>@clt.Color</td>
-                <td>@clt.Capacidadcarga</td>
-                <td>@clt.Pasajeros</td>
-                <td>@clt.Nroseguro</td>
+                <tr>
+                    <td>@clt.Marca</td>
+                    <td>@clt.Modelo</td>
+                    <td>@clt.Año</td>
+                    <td>@clt.Color</td>
+                    <td>@clt.Capacidadcarga</td>
+                    <td>@clt.Pasajeros</td>
+                    <td>@clt.Nroseguro</td>
+                    @if (clt.Disponible == 0)
+                    {
+                        <td>No disponible</td>
+                    }
+                    else
+                    {
+                        <td>Disponible</td>
+                    }
 
-                <td>
-                    <button @onclick="()=>Change(clt.IdVehiculos)" class="btn btn-dark">@result(@clt.Status)</button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    <td>
+                        <button @onclick="()=>Change(clt.IdVehiculos)" class="btn btn-dark">@result(@clt.Status)</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr>
 
 
-} else {
+}
+else
+{
 
-<h3>No hay clientes registrados.</h3>
+    <h3>No hay vehiculos registrados.</h3>
 
 }
 
-
+<div class="input-group-append">
+    <div id="map" style="height:500px;width:100%;"></div>
+</div>
 @code {
 
     List<Vehiculos> Vehiculos() => new rentcarContext(rentar).Vehiculos.ToList();
@@ -98,5 +116,15 @@
         }
 
         context.SaveChanges();
+    }
+
+    //Mapa
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("initMap", context.Vehiculos.ToList<Vehiculos>());
+        }
     }
 }
