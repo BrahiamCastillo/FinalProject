@@ -1,0 +1,104 @@
+@page "/rango"
+@inject DbContextOptions<rentcarContext> options
+
+<h1>Listado de vehiculos por fecha</h1>
+<hr>
+<hr>
+<div class="form-group">
+        <label for="fecha-inicio">Selecciona fecha desde: </label>
+        <input @bind-value="@fechainicio" type="date" name="fecha-inicio" id="fecha-inicio">
+    </div>
+    <hr>
+    <div class="form-group">
+        <label for="fecha-fin">Selecciona la fecha hasta: </label>
+        <input @bind-value="@fechafinal" type="date" name="fecha-fin" id="fecha-fin">
+    </div>
+   <hr> 
+   <div class="form-group">
+        <button @onclick="@Cargar" class="btn btn-dark">Consultar</button>
+    </div>
+    <hr>
+    <h3>@message</h3>
+@if(Rango.Count > 0 && interuptor == true) {
+
+    <table class="table table-dark">
+    <thead>
+        <tr>
+            <th>ID Factura</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Final</th>
+            <th>Tipo</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Color</th>
+            <th>Año</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var alq in Rango)
+        {
+            var carro = ListaVehiculos(@alq.VehiculosIdVehiculos);
+            var tipocoche = TiposCoches(@carro.TipoVehiculosIdTipoVehiculos);
+            <tr>
+                <td>@alq.IdAlquileres</td>
+                <td>@alq.FechaInicio</td>
+                <td>@alq.FechaFin</td>
+                <td>@tipocoche.Tipo</td>
+                <td>@carro.Marca</td>
+                <td>@carro.Modelo</td>
+                <td>@carro.Color</td>
+                <td>@carro.Año</td>
+                <td>@alq.Monto</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+} else if(Rango.Count < 1 && interuptor == true) {
+
+    <h3>No hay vehiculos con alquileres en esa fecha.</h3>
+}
+
+@code{
+
+    DateTime fechainicio = DateTime.Now;
+    DateTime fechafinal = DateTime.Now.AddDays(10);
+    string message = "";
+    List<Alquileres> Rango = new List<Alquileres>();
+    bool interuptor = false;
+    rentcarContext ctx;
+
+    protected override void OnInitialized()
+    {
+        ctx = new rentcarContext(options);
+    }
+
+    void Cargar() {
+
+        try
+        {
+            Rango = ctx.Alquileres.Where(d => d.FechaInicio >= fechainicio || d.FechaFin <= fechafinal).ToList();
+            interuptor = true;
+        }
+        catch (System.Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            message = "No se pudo realizar el registro del alquiler";
+        }
+        
+    }
+
+    Vehiculos ListaVehiculos(int id){
+
+        Vehiculos carro = new rentcarContext(options).Vehiculos.Where(d => d.IdVehiculos == id).SingleOrDefault();
+
+        return carro;
+    }
+
+    TipoVehiculos TiposCoches(int id) {
+
+        TipoVehiculos tipo = new rentcarContext(options).TipoVehiculos.Where(t => t.IdTipoVehiculos == id).SingleOrDefault();
+        return tipo;
+    }
+}

@@ -71,7 +71,7 @@ else
 
     rentcarContext ctx;
 
-    List<Vehiculos> Vehicles() => new rentcarContext(options).Vehiculos.Where(v => v.Disponible == 1).ToList();
+    List<Vehiculos> Vehicles() => new rentcarContext(options).Vehiculos.Where(v => v.Disponible == 1 && v.Status == 1).ToList();
 
     List<Clientes> Customers() => new rentcarContext(options).Clientes.Where(c => c.Status == 1).ToList();
 
