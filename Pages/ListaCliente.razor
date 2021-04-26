@@ -1,0 +1,48 @@
+@page "/deber"
+@inject DbContextOptions<rentcarContext> options
+
+<h1>Clientes que deben.</h1>
+<hr>
+<hr>
+@if(Deben().Count > 0) {
+
+    <table class="table table-dark">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Cedula</th>
+            <th>Monto</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var alq in Deben())
+        {
+            var client = ListaClientes(@alq.ClientesIdClientes);
+            <tr>
+                <td>@client.Nombre</td>
+                <td>@client.Apellido</td>
+                <td>@client.Cedula</td>
+                <td>@alq.Monto</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+} else {
+
+    <h3>No hay clientes con deudas.</h3>
+}
+@code {
+
+    List<Alquileres> Deben() => new rentcarContext(options).Alquileres.Where(d => d.Monto > 0).ToList();
+
+    Clientes ListaClientes(int idCliente) {
+        
+       Clientes client = new rentcarContext(options).Clientes.Where(d => d.IdClientes == idCliente).SingleOrDefault();
+
+       return client;
+    }
+
+    
+}
