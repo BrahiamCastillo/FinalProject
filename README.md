@@ -17,8 +17,6 @@ Lo siguiente es introducir el connection string con el siguiente comando:
 
 ```bash
 dotnet user-secrets set ConnectionStrings:rentcar "server=localhost;uid=root;pwd=tupassword;database=rentcar"
-
-dotnet user-secrets set ConnectionStrings:rentcar "server=rentcar.mysql.database.azure.com;uid=brahiam@rentcar;pwd=Br4h14m123;database=rentcar"
 ```
 En la parte de "uid" y "pwd", deben reemplazarlo con su respectivo usuario y contraseña de MYSQL, ya deben saber acerca de hacer como es el asunto del connection string.
 
